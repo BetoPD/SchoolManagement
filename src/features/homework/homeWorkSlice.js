@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { act } from 'react-dom/test-utils';
 
 const homeWorkReducer = createSlice({
     name: 'homeWork',
@@ -7,22 +8,27 @@ const homeWorkReducer = createSlice({
         addHomeWork: (state, action) => {
             return [...state, action];
         },
-        deleteHomeWork: (state, {id}) => {
+        deleteHomeWork: (state, action) => {
+            const {id} = action.payload;
             return state.filter(item => item.id !== id);
         },
-        editHomeWork: (state, {id, subjectId, grade, theme, dueDate, done: done}) => {
+        editHomeWork: (state, action) => {
+            const {id, subjectId, grade, theme, dueDate} = action.payload;
             const index = state.findIndex(item => item.id === id);
-            state[index] = {id: id, subjectId: subjectId, grade: grade, theme: theme, dueDate: dueDate, done: done};
+            state[index] = {id: id, subjectId: subjectId, grade: grade, theme: theme, dueDate: dueDate, done: false};
         },
-        addGrade: (state, {id, grade}) => {
+        addGrade: (state, action)  => {
+            const {id, grade} = action.payload;
             const index = state.findIndex(item => item.id === id);
             state[index].grade = grade;
         },
-        markHomeWorkAsDone: (state, {id}) => {
+        markHomeWorkAsDone: (state, action) => {
+            const {id} = action.payload;
             const index = state.findIndex(item => item.id === id);
             state[index].done = true;
         },
-        markHomeWorkAsNotDone: (state, {id}) => {
+        markHomeWorkAsNotDone: (state, action) => {
+            const {id} = action.payload;
             const index = state.findIndex(item => item.id === id);
             state[index].done = false;
         }
